@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int find_max(int, int, int);
+int find_max(int, int, int, int, int, int);
 int find_largest_sum(int, int, int,  int**, int**);
 void print_array(int**, int);
 int** initialize_arrays(int, bool, fstream&);
@@ -71,7 +71,7 @@ void delete_arrays(int dimension, int** max, int **array){
 //Input: Max up, max left, Current Value
 //Output: Max value
 
-int find_max(int up, int left, int current){
+int find_max(int up, int left, int current, int dimension, int x, int y){
    int temp;
    temp = up;
    if (temp < left){
@@ -80,8 +80,13 @@ int find_max(int up, int left, int current){
    if (temp < current){
       temp = current;
    }
-   if(temp > max_sum)
-      max_sum = temp;
+   if(temp > max_sum){
+         if(x == dimension-1 || y == dimension-1){ //checks that in last row or column
+                  max_sum = temp;
+         }
+
+   }
+
 
    return temp;
 }
@@ -89,7 +94,6 @@ int find_max(int up, int left, int current){
 // Recursion Function
 
 int find_largest_sum(int dimension, int x, int y,  int** array, int** max){
-      cout << x << "  " << y << endl;
       //base case
 
       if(max[x][y] != -99999){
@@ -108,7 +112,7 @@ int find_largest_sum(int dimension, int x, int y,  int** array, int** max){
                   max_left= find_largest_sum(dimension, x-1, y, array, max);
             }
             current = array[x][y];
-            int biggest = find_max(max_top + current, max_left + current, current);
+            int biggest = find_max(max_top + current, max_left + current, current, dimension, x, y);
             max[x][y] = biggest;
             return biggest;
       }
