@@ -6,6 +6,7 @@
 
 using namespace std;
 
+int max_sum = -9999;
 
 // Get max Function
 //Input: Max up, max left, Current Value
@@ -29,7 +30,7 @@ int max(int up, int left, int current){
 
 
 int main(){
-// File I/O
+// File Input
    int dimension;
    fstream file;
    file.open("test/1/input.txt");
@@ -51,6 +52,14 @@ int main(){
       }
       cout<<endl;
    }
+
+   file.close();
+
+
+// File Output
+   ofstream output_file;
+   output_file.open("test/1/output.txt");
+   output_file << max_sum;
 
 
 
