@@ -148,7 +148,7 @@ int main(){
 
 
    delete_arrays(dimension, max, array);
-
+   output_file.close();
    //cout << "MAX_SUM IS " << max_sum << endl;
 
    //printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC); //tbh not sure if this works
