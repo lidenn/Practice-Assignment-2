@@ -139,7 +139,7 @@ int main(){
    file.close();
 
    find_largest_sum(dimension, dimension-1, dimension-1, array, max);
-   print_array(array, max, dimension);
+ //  print_array(array, max, dimension);
 // File Output
    ofstream output_file;
    output_file.open("output.txt");
@@ -149,7 +149,7 @@ int main(){
 
    delete_arrays(dimension, max, array);
 
-   cout << "MAX_SUM IS " << max_sum << endl;
+   //cout << "MAX_SUM IS " << max_sum << endl;
 
-   printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC); //tbh not sure if this works
+   //printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC); //tbh not sure if this works
 }
