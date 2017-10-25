@@ -1,3 +1,5 @@
+//By Bradford Wong, Dennis Li, and Thomas Huynh
+
 #include<iostream>
 #include<stdio.h>
 #include<fstream>
