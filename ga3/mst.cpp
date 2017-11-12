@@ -23,7 +23,8 @@ vertices* initialize_vertices(vertices*, int);
 void push(vertices*, int);
 int find_smallest_edge(int**, int, bool*, vertices*);
 
-//pushes the vertex that connects the safe edge into the MST
+//Function: pushes the vertex that connects the safe edge into the MST
+//Parameters: MST-the minimum spanning tree, vertex: the index of the current vertex that is being added to the MST
 void push(vertices* MST, int vertex){
 	//cout << "MST->Size is " << MST->size <<  endl;
 	int temp_size = MST->size;
@@ -47,7 +48,7 @@ vertices* initialize_vertices(vertices* MST, int number_vertices){
 	return v;
 }*/
 
-//initialize MST so that all entries are false, meaning that none of the indices are in the MST
+//function: initialize MST so that all entries are false, meaning that none of the indices are in the MST
 bool* initializeMST(int number_vertices){
 	bool *a;
 	a = new bool[number_vertices];
@@ -121,7 +122,9 @@ int find_safe_edge(int** array, int number_vertices, int row, bool* in_row_MST, 
 	return safe_edge;
 }*/
 
-//finds the mst sum using prim's algorithm
+//FUNCTION: finds the mst sum using prim's algorithm
+//PARAMETERS: array-the adjacency matrix given from the input file, in_row_MST- array where indices with "true" in it mean that vertex is in the MST (vertex # = in_row_MST index)
+//MST-the minimum spanning tree, composed of vertices
 int prim(int** array, int number_vertices, bool* in_row_MST, vertices* MST){
 	int MST_sum = 0;
 	//cout << "In prim " << endl;
@@ -132,7 +135,9 @@ int prim(int** array, int number_vertices, bool* in_row_MST, vertices* MST){
 	cout << "MST SUM IS " << MST_sum << endl;
 }
 
-//returns the weight of the safe edge
+//FUNCTION: returns the weight of the safe edge
+//PARAMETERS: array-the adjacency matrix given from the input file, in_row_MST- array where indices with "true" in it mean that vertex is in the MST (vertex # = in_row_MST index)
+//MST-the minimum spanning tree, composed of vertices
 int find_smallest_edge(int** array, int number_vertices, bool* in_row_MST, vertices* MST){
 	int safe_edge = 99999999; //the weight of the safe edge
 	int safe_index; //the index where the safe edge is in the array
@@ -164,20 +169,14 @@ int main(){
 	bool* in_row_MST = new bool[number_vertices]; //index is true if in mst. Initially all false
 	struct vertices* MST;
 	MST = new vertices;
-	//cout << "Before putting in new int " << endl;
+
 	int* test;
 	test = new int[number_vertices];
 	MST->mst = new int[number_vertices];
-//	cout << "Before putting in size " << endl;
+
 	MST->size = 0;
 	push(MST, 0);
-	//MST->mst = new int[number_vertices];
 
-	//cout << "Before initialize vertices" << endl;
-	//MST = initialize_vertices(MST, number_vertices);
-	//cout << "After initialize vertices " << endl;
-
-	//cout << "Number of vertices " << number_vertices << endl;
 	array = initialize_arrays(number_vertices, file);\
 	file.close();
 	in_row_MST = initializeMST(number_vertices);
