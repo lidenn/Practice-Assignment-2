@@ -7,7 +7,6 @@
 
 using namespace std;
 
-int MST1Sum = 99999999;
 int MST2Sum = 99999999;
 int MST3Sum = 99999999;
 
@@ -32,7 +31,7 @@ int** initialize_arrays(int, fstream&);
 void print_array(int**, int);
 int find_safe_edge(int**, int, int, bool*, vertices*);
 int prim(int**, int, bool*, vertices*, edge*, int);
-int prim3(int**, int, bool*, vertices*, edge*, edge*, edge*, edge*);
+int prim3(int**, int, bool*, vertices*, edge*, edge*);
 bool* initializeMST(int);
 void add_to_MST(bool*, int);
 vertices* initialize_vertices(vertices*, int);
@@ -42,33 +41,11 @@ int find_smallest_edge2(int**, int, bool*, vertices*, edge*, edge*);
 void resetMST(bool*, int);
 void prim2(int**, int, bool*, vertices*, vertices*);
 int secondSmallest(int**, int row, int);
-void findSmallestTwo(int, edge*, edge*, edge*, int number_vertices);
+void findSmallestTwo(int);
 bool checkNotSame(vertices*, vertices*, int);
 bool checkNotIgnored(edge*, int, int);
 void pushEdge(edge*, int, int);
 bool notSameMST(edge*, edge*, int);
-void swapMST(edge*, edge*, int);
-
-void swapMST(edge* MST1, edge* MST2, int number_vertices){
-	edge * temp;
-	temp = new edge[number_vertices-1];
-
-	for(int i = 0; i < number_vertices-1; i++){
-		temp->mst[i].p1 = MST1->mst[i].p1;
-		temp->mst[i].p2 = MST1->mst[i].p2;
-	}
-
-	for(int i = 0; i < number_vertices-1; i++){
-		MST1->mst[i].p1 = MST2->mst[i].p1;
-		MST1->mst[i].p2 = MST2->mst[i].p2;
-	}
-
-	for(int i = 0; i < number_vertices-1; i++){
-		MST2->mst[i].p1 = temp->mst[i].p1;
-		MST2->mst[i].p2 = temp->mst[i].p2;
-	}
-	delete temp;
-}
 
 void pushEdge(edge* MST1, int safe_index, int safe_row){
 	if(safe_row < safe_index){
@@ -82,18 +59,15 @@ void pushEdge(edge* MST1, int safe_index, int safe_row){
 	MST1->size = MST1->size + 1;
 }
 
-void findSmallestTwo(int sum, edge* temp, edge* MST2, edge* MST3, int number_vertices){
+void findSmallestTwo(int sum){
 	int smallest = MST2Sum;
 	int second = MST3Sum;
 
 	if(sum < smallest){
 		second = smallest;
-		swapMST(MST3, MST2,  number_vertices);
 		smallest = sum;
-		swapMST(MST2, temp,  number_vertices);
 	}else if (sum < second){
 		second = sum;
-		swapMST(MST3, temp,  number_vertices);
 	}
 	MST2Sum = smallest;
 	MST3Sum = second;
@@ -214,31 +188,28 @@ int prim(int** array, int number_vertices, bool* in_row_MST, vertices* MST, edge
 		MST_sum += find_smallest_edge(array, number_vertices, in_row_MST, MST, MST1, 0); //add weight of each safe edge to running total
 		//in_row_MST[i] = true;
 	}
-	MST1Sum = MST_sum;
 	cout << "MST SUM IS " << MST_sum << endl;
 }
 
 bool notSameMST(edge* MST1, edge* MST2 , int number_vertices){
 	bool check = false;
 	for(int i = 0; i < number_vertices-1; i++){
-		//if(MST1->mst[i].p1 != MST2->mst[0].p1 && MST1->mst[i].p2 != MST2->mst[0].p1){
-			for(int j = 0; j < number_vertices-1; j++){
-				//cout << "Comparing " << MST1->mst[i].p1 << ", " << MST1->mst[i].p2 << " to " << MST2->mst[j].p1 << ", " << MST2->mst[j].p2 << endl;
+		if(MST1->mst[i].p1 != MST2->mst[0].p1 && MST1->mst[i].p2 != MST2->mst[0].p1){
+			for(int j = 1; j < number_vertices-1; j++){
+				cout << "Comparing " << MST1->mst[i].p1 << ", " << MST1->mst[i].p2 << " to " << MST2->mst[j].p1 << ", " << MST2->mst[j].p2 << endl;
 				if(MST1->mst[i].p1 == MST2->mst[j].p1 && MST1->mst[i].p2 == MST2->mst[j].p2){
-			//		cout << "They are the same, so check is false and breaking out. " << endl;
+					cout << "They are the same, so check is false and breaking out. " << endl;
 					check = false;
 					break;
 				}
 				check = true;
 			}
-			//cout << "Just broke out of first loop " << endl;
 			if(check == true){
-			//	cout << "Check is TRUE, so returning " << endl;
+				cout << "Check is TRUE, so returning " << endl;
 				return true;
 			}
-		//}
+		}
 	}
-//	cout << "Returning false " << endl;
 	return false;
 	/*
 	cout << "In notSameMST " << endl;
@@ -261,33 +232,28 @@ bool notSameMST(edge* MST1, edge* MST2 , int number_vertices){
 
 //OVERLOADED ONE
 
-int prim3(int** array, int number_vertices, bool* in_row_MST, vertices* MST, edge* ignored, edge* MST1, edge* MST2, edge* MST3){
+int prim3(int** array, int number_vertices, bool* in_row_MST, vertices* MST, edge* ignored, edge* MST1){
 	//cout << "In overloaded one " << endl;
-	struct edge* tempMST;
-	tempMST = new edge;
-	tempMST->mst= new line[number_vertices-1];
-	tempMST->size = 0;
+	struct edge* MST2;
+	MST2 = new edge;
+	MST2->mst= new line[number_vertices-1];
+	MST2->size = 0;
 	for(int i = 0; i < number_vertices-1; i++){
-		tempMST->mst[i].p1 = -1;
-		tempMST->mst[i].p2 = -1;
+		MST2->mst[i].p1 = -1;
+		MST2->mst[i].p2 = -1;
 	}
 	int MST_sum = 0;
 	//cout << "In prim " << endl;
 	for(int i = 0; i < number_vertices -1; i ++){ //iterate number_vertices-1 because total number of edges is # of vertices -1
-		MST_sum += find_smallest_edge2(array, number_vertices, in_row_MST, MST, ignored, tempMST); //add weight of each safe edge to running total
+		MST_sum += find_smallest_edge2(array, number_vertices, in_row_MST, MST, ignored, MST2); //add weight of each safe edge to running total
 		//in_row_MST[i] = true;
 	}
 	//cout << "MST SUM2 IS " << MST_sum << endl;
-	if(notSameMST(MST1, tempMST, number_vertices) && notSameMST(MST2, tempMST, number_vertices)){
-	//	cout << "Not same, so returning:  "<<  MST_sum << endl;
-		findSmallestTwo(MST_sum, tempMST, MST2, MST3, number_vertices);
-		delete tempMST->mst;
-		delete tempMST;
+	if(notSameMST(MST1, MST2, number_vertices)){
+		cout << "Not same, so returning:  "<<  MST_sum << endl;
 		return MST_sum;
 	}else{
-	//	cout << "Same, so returning 9999999 " << endl;
-		delete tempMST->mst;
-		delete tempMST;
+		cout << "Same, so returning 9999999 " << endl;
 		return 99999999;
 	}
 }
@@ -442,6 +408,9 @@ int main(){
 	bool* in_row_MST = new bool[number_vertices]; //index is true if in mst. Initially all false
 	struct vertices* MST;
 	MST = new vertices;
+
+	int* test;
+	test = new int[number_vertices];
 	MST->mst = new int[number_vertices];
 
 	MST->size = 0;
@@ -451,7 +420,7 @@ int main(){
 	file.close();
 	in_row_MST = initializeMST(number_vertices);
 	in_row_MST[0] = true;
-	//print_array(array, number_vertices);
+	print_array(array, number_vertices);
 
 	struct edge* MST1;
 	MST1 = new edge;
@@ -461,25 +430,6 @@ int main(){
 		MST1->mst[i].p1 = -1;
 		MST1->mst[i].p2 = -1;
 	}
-
-	struct edge* MST2;
-	MST2 = new edge;
-	MST2->mst= new line[number_vertices-1];
-	MST2->size = 0;
-	for(int i = 0; i < number_vertices-1; i++){
-		MST2->mst[i].p1 = -1;
-		MST2->mst[i].p2 = -1;
-	}
-
-	struct edge* MST3;
-	MST3 = new edge;
-	MST3->mst= new line[number_vertices-1];
-	MST3->size = 0;
-	for(int i = 0; i < number_vertices-1; i++){
-		MST3->mst[i].p1 = -1;
-		MST3->mst[i].p2 = -1;
-	}
-
 	prim(array, number_vertices, in_row_MST, MST, MST1, 0);
 
 	struct edge* ignored;
@@ -494,39 +444,18 @@ int main(){
 			MST->size = 0;
 			push(MST, 0);
 			in_row_MST[0] = true;
-			prim3(array, number_vertices, in_row_MST, MST, ignored, MST1, MST2, MST3) ; //use overloaded one
-			//findSmallestTwo(MST1, MST2, MST3, number_vertices);
+			findSmallestTwo(prim3(array, number_vertices, in_row_MST, MST, ignored, MST1)); //use overloaded one
+
 		}
 	}
 
-cout << "MST1: " << MST1Sum << endl;
+
 cout << "MST2: " << MST2Sum << endl;
 cout << "MST3: " << MST3Sum << endl;
 
-delete ignored;
-
-delete MST1->mst;
-delete MST1;
-
-delete MST2->mst;
-delete MST2;
-
-delete MST3->mst;
-delete MST3;
-
-delete MST->mst;
-delete MST;
-
-delete[] in_row_MST;
-
-for(int i = 0; i < number_vertices; i++){
-	delete [] array[i];
-}
-delete [] array;
-
-//cout << "Order of MST1: " << endl;
+cout << "Order of MST1: " << endl;
 for(int i = 0; i < number_vertices-1; i++){
-		//cout << "[" << MST1->mst[i].p1 << "][" << MST1->mst[i].p2  << "]" << endl;
+		cout << "[" << MST1->mst[i].p1 << "][" << MST1->mst[i].p2  << "]" << endl;
 }
 
 /*
