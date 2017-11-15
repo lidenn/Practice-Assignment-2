@@ -93,7 +93,7 @@ void findSmallestTwo(int sum, edge* tempMST, edge* MST2, edge* MST3, int number_
 		//cout << "Just exited for loop " << endl;
 		second = smallest;
 		//cout << "Before swap MST3 with MST2, tempMST. Size of MST2 " << MST2->size << ", MST3: " << MST3->size <<", tempMST->size; " << tempMST->size << endl;
-		swapMST(MST3, MST2, number_vertices);
+		//swapMST(MST3, MST2, number_vertices);
 		smallest = sum;
 		//cout << "Before swap MST2 with tempMST, tempMST. Size of MST2 " << MST2->size << ", MST3: " << MST3->size <<", tempMST->size; " << tempMST->size << endl;
 		swapMST(MST2, tempMST, number_vertices);
@@ -101,7 +101,7 @@ void findSmallestTwo(int sum, edge* tempMST, edge* MST2, edge* MST3, int number_
 	//	cout << "In sum < second " << endl;
 		second = sum;
 	//	cout << "Before swap MST3, tempMST. Size of MST2 " << MST2->size << ", MST3: " << MST3->size <<", tempMST->size; " << tempMST->size << endl;
-		swapMST(MST3, tempMST, number_vertices);
+		//swapMST(MST3, tempMST, number_vertices);
 	}
 	MST2Sum = smallest;
 	MST3Sum = second;
@@ -305,30 +305,33 @@ int prim3(int** array, int number_vertices, bool* in_row_MST, vertices* MST, edg
 	for(int i = 0; i < number_vertices-1; i++){
 		tempMST->mst[i].p1 = -1;
 		tempMST->mst[i].p2 = -1;
+
 	}
 	int MST_sum = 0;
 	//cout << "In prim " << endl;
 	for(int i = 0; i < number_vertices -1; i ++){ //iterate number_vertices-1 because total number of edges is # of vertices -1
 		MST_sum += find_smallest_edge2(array, number_vertices, in_row_MST, MST, ignored, tempMST); //add weight of each safe edge to running total
 		//in_row_MST[i] = true;
+		if (MST_sum > MST3Sum) {
+			return 99999999;
+		}
 	}
 	//cout << "MST SUM2 IS " << MST_sum << endl;
 //	cout << "Before notSameMst. MST2 size is: " << MST2->size << endl;
-	for(int i = 0; i < tempMST->size; i++){
 
-	}
-	if(notSameMST(MST1, tempMST, number_vertices) && notSameMST(MST2, tempMST, number_vertices) && notSameMST(MST3, tempMST, number_vertices)){
+
+	if(notSameMST(MST1, tempMST, number_vertices) && notSameMST(MST2, tempMST, number_vertices)){
 	//	cout << "Not same, so returning:  "<<  MST_sum << endl;
 		findSmallestTwo(MST_sum, tempMST, MST2, MST3, number_vertices);
-		delete tempMST->mst;
-		delete tempMST;
+		//delete tempMST->mst;
+		//delete tempMST;
 
 		return MST_sum;
 	}else{
 		//cout << "Same, so returning 9999999 " << endl;
 		//findSmallestTwo(99999999, tempMST, MST2, MST3, number_vertices);
-		delete tempMST->mst;
-		delete tempMST;
+		//delete tempMST->mst;
+		//delete tempMST;
 
 		return 99999999;
 	}
@@ -476,7 +479,7 @@ bool checkNotIgnored(edge* ignored, int i, int row){
 }
 
 int main(){
-	clock_t tStart = clock();
+	//clock_t tStart = clock();
 	int number_vertices;
 	fstream file;
 	file.open("input.txt");
@@ -517,10 +520,10 @@ int main(){
 	struct edge* MST3;
 	MST3 = new edge;
 	MST3->mst= new line[number_vertices-1];
-	MST3->size = 0;
+	/*MST3->size = 0;
 	for(int i = 0; i < number_vertices-1; i++){
 		pushEdge(MST3, -1, -1);
-	}
+	}*/
 
 	prim(array, number_vertices, in_row_MST, MST, MST1, 0);
 
@@ -547,6 +550,7 @@ int main(){
 
 //	}
 
+	/*
 	delete ignored;
 
 	delete[] MST1->mst;
@@ -564,17 +568,25 @@ int main(){
 		delete [] array[i];
 	}
 	delete [] array;
-
+	*/
 	//cout << "Order of MST1: " << endl;
-	for(int i = 0; i < number_vertices-1; i++){
+	//for(int i = 0; i < number_vertices-1; i++){
 			//cout << "[" << MST1->mst[i].p1 << "][" << MST1->mst[i].p2  << "]" << endl;
-	}
+	//}
 
 
-cout << "MST1: " << MST1Sum << endl;
+	/**/
+ofstream output_file;
+output_file.open("output.txt");
+output_file << MST1Sum << "\n" << MST2Sum << "\n" << MST3Sum;
+output_file.close();
+
+
+/*cout << "MST1: " << MST1Sum << endl;
 cout << "MST2: " << MST2Sum << endl;
-cout << "MST3: " << MST3Sum << endl;
-printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC); //tbh not sure if this works
+cout << "MST3: " << MST3Sum << endl;*/
+//printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC); //tbh not sure if this works
+
 /*
 cout << "Order of MST1: " << endl;
 for(int i = 0; i < number_vertices-1; i++){
