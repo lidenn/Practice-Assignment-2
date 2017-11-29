@@ -106,15 +106,25 @@ cout << endl;
       for(int i = 0; i < number_bulbs; i++){
             //cout << i << endl;
             if(initialState[i] == 1){
-                  test.push_back(make_pair(bulbs[i].switch1 * -1, bulbs[i].switch2));
+                  //test.push_back(make_pair(bulbs[i].switch1 * -1, bulbs[i].switch2));
                   //cout << "Pushed " << bulbs[i].switch1 * -1 << ", " << bulbs[i].switch2 << endl;
-                  test.push_back(make_pair(bulbs[i].switch1, bulbs[i].switch2 * -1));
+                //  test.push_back(make_pair(bulbs[i].switch1, bulbs[i].switch2 * -1));
                   //cout << "Pushed " <<bulbs[i].switch1 << ", " <<  bulbs[i].switch2 * -1 << endl;
-            }else{
+                  //swapped content of if and else statements
                   test.push_back(make_pair(bulbs[i].switch1, bulbs[i].switch2));
             //      cout << "Pushed " << bulbs[i].switch1  << ", " << bulbs[i].switch2 << endl;
                   test.push_back(make_pair(bulbs[i].switch1*-1, bulbs[i].switch2*-1));
             //      cout << "Pushed " <<bulbs[i].switch1 * -1 << ", " <<  bulbs[i].switch2 * -1 << endl;
+            }else{
+                  //test.push_back(make_pair(bulbs[i].switch1, bulbs[i].switch2));
+            //      cout << "Pushed " << bulbs[i].switch1  << ", " << bulbs[i].switch2 << endl;
+                  //test.push_back(make_pair(bulbs[i].switch1*-1, bulbs[i].switch2*-1));
+            //      cout << "Pushed " <<bulbs[i].switch1 * -1 << ", " <<  bulbs[i].switch2 * -1 << endl;
+            //swapped content of if and else statements
+                    test.push_back(make_pair(bulbs[i].switch1 * -1, bulbs[i].switch2));
+                    //cout << "Pushed " << bulbs[i].switch1 * -1 << ", " << bulbs[i].switch2 << endl;
+                    test.push_back(make_pair(bulbs[i].switch1, bulbs[i].switch2 * -1));
+                    //cout << "Pushed " <<bulbs[i].switch1 << ", " <<  bulbs[i].switch2 * -1 << endl;
             }
 
       }
