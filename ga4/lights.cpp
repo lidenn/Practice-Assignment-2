@@ -46,7 +46,7 @@ cout << endl;
       for(int line = 0; line < number_switches; line++){
             bool atEnd = false;
             string temp = "";
-            cout << "Line " << line << ": ";
+            //cout << "Line " << line << ": ";
             while(atEnd == false){
                   if(file.peek() == ','){
                         file.ignore();
@@ -71,7 +71,7 @@ cout << endl;
       /*Set up vector of 2SAT statements. */
       vector<pair<int, int> > test;
       for(int i = 0; i < number_bulbs; i++){
-            cout << i << endl;
+            //cout << i << endl;
             if(initialState[i] == 1){
                   test.push_back(make_pair(bulbs[i].switch1 * -1, bulbs[i].switch2));
                   //cout << "Pushed " << bulbs[i].switch1 * -1 << ", " << bulbs[i].switch2 << endl;
@@ -88,6 +88,7 @@ cout << endl;
       //cout << "At end of for loop " << endl;
             cout << "Answer is: " << satisfiable(test) << endl;
             test.clear();
+            //
             /*
             string temp;
             getline(file, temp);
@@ -105,10 +106,10 @@ cout << endl;
             temp = "";
             */
 
-
+/*
       for(int i = 0; i < number_bulbs; i++){
             cout << " Bulb " << i << " is connected to " << bulbs[i].switch1 << ", " << bulbs[i].switch2 << endl;
-      }
+      }*/
 
       cout << endl;
 
